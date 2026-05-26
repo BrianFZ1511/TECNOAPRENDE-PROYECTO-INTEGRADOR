@@ -124,6 +124,7 @@
                         </button>
                         <div id="sub-1-3" class="submenu">
                             <button onclick="cargarContenido('2.3.doc')">Documento</button>
+                            <button onclick="cargarContenido('2.3.actividad')">Actividad</button>
                         </div>
 
                         <!-- 1.4 -->
@@ -133,7 +134,7 @@
                         </button>
                         <div id="sub-1-4" class="submenu">
                             <button onclick="cargarContenido('2.4.doc')">Documento</button>
-                            <button onclick="cargarContenido('2.3.actividad')">Actividad</button>
+                            <button onclick="cargarContenido('2.4.actividad')">Actividad</button>
                         </div>
 
                         <!-- 1.5 -->
@@ -143,7 +144,7 @@
                         </button>
                         <div id="sub-1-5" class="submenu">
                             <button onclick="cargarContenido('2.5.doc')">Documento</button>
-                            <button onclick="cargarContenido('2.4.actividad')">Actividad</button>
+                            <button onclick="cargarContenido('2.5.actividad')">Actividad</button>
                         </div>
 
                         <!-- 1.6 -->
@@ -153,7 +154,7 @@
                         </button>
                         <div id="sub-1-6" class="submenu">
                             <button onclick="cargarContenido('2.6.doc')">Documento</button>
-                            <button onclick="cargarContenido('2.5.actividad')">Actividad</button>
+                            <button onclick="cargarContenido('2.6.actividad')">Actividad</button>
                         </div>
 
                         <form action="SvIniciarEvaluacion" method="GET">
@@ -211,7 +212,7 @@
                 </div>
             </div>
             <div class="creditos-equipo">
-                <a href="creditos.jsp"><p>© 2025 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
+                <a href="creditos.jsp"><p>© 2026 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
             </div>
         </footer>
         
