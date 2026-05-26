@@ -232,46 +232,70 @@
             const contenidos = {
                 /* 2. Curso Avanzado */
                 "2.1.doc": `<div class="visor-pdf">
-                                <iframe src="docs/CursoAvanzado/Documentos/2.1.CursoAvanzado-doc.pdf#zoom=page-width"></iframe>
+                                <iframe src="https://drive.google.com/file/d/19PXnfNyKa3WCtTN69Rx7p0dfIUa9ikwQ/preview"
+                                    allow="autoplay">
+                                </iframe>
                             </div>`,
-                "2.1.actividad": `<div class="visor-pdf">
-                                    <iframe src="docs/CursoAvanzado/Actividades/2.1.CursoAvanzado-act.pdf"></iframe>
-                                  </div>`,
+                "2.1.actividad":`<div class="visor-pdf">
+                                    <iframe src="https://drive.google.com/file/d/1QtWFm_j3w3aI62cmeR6BunrJReTa8GPQ/preview"
+                                        allow="autoplay">
+                                    </iframe>
+                                </div>`,
 
                 "2.2.doc": `<div class="visor-pdf">
-                                <iframe src="docs/CursoAvanzado/Documentos/2.2.CursoAvanzado-doc.pdf"></iframe>
+                                <iframe src="https://drive.google.com/file/d/1wVOGD1km0y9lxK8OzxFsjNtmum_Q3B1j/preview"
+                                    allow="autoplay">
+                                </iframe>
                             </div>`,
-                "2.2.actividad": `<div class="visor-pdf">
-                                    <iframe src="docs/CursoAvanzado/Actividades/2.2.CursoAvanzado-act.pdf"></iframe>
-                                  </div>`,
+                "2.2.actividad":`<div class="visor-pdf">
+                                    <iframe src="https://drive.google.com/file/d/1Zq3kfZ40tB0iTC24qeOb8xSNL78OK3MT/preview"
+                                        allow="autoplay">
+                                    </iframe>
+                                </div>`,
 
                 "2.3.doc": `<div class="visor-pdf">
-                                <iframe src="docs/CursoAvanzado/Documentos/2.3.CursoAvanzado-doc.pdf"></iframe>
+                                <iframe src="https://drive.google.com/file/d/10dfHmUkMP7qyetegD_0vLmKgUi3LnbCE/preview"
+                                    allow="autoplay">
+                                </iframe>
                             </div>`,
-                "2.3.actividad": `<div class="visor-pdf">
-                                    <iframe src="docs/CursoAvanzado/Actividades/2.3.CursoAvanzado-act.pdf"></iframe>
-                                  </div>`,
+                "2.3.actividad":`<div class="visor-pdf">
+                                    <iframe src="https://drive.google.com/file/d/1kO6bnWHU8suVgu25k45RR-Fv9RXg2p2l/preview"
+                                        allow="autoplay">
+                                    </iframe>
+                                </div>`,
 
                 "2.4.doc": `<div class="visor-pdf">
-                                <iframe src="docs/CursoAvanzado/Documentos/2.4.CursoAvanzado-doc.pdf"></iframe>
+                                <iframe src="https://drive.google.com/file/d/1rmT3JhPDJzyf26t50KEZUPdg7L5ol8QN/preview"
+                                    allow="autoplay">
+                                </iframe>
                             </div>`,
-                "2.4.actividad": `<div class="visor-pdf">
-                                    <iframe src="docs/CursoAvanzado/Actividades/2.4.CursoAvanzado-act.pdf"></iframe>
-                                  </div>`,
+                "2.4.actividad":`<div class="visor-pdf">
+                                    <iframe src="https://drive.google.com/file/d/1RC_KS05NG0EVTzLwg4MswxuPI_fMCPNi/preview"
+                                        allow="autoplay">
+                                    </iframe>
+                                </div>`,
 
                 "2.5.doc": `<div class="visor-pdf">
-                                <iframe src="docs/CursoAvanzado/Documentos/2.5.CursoAvanzado-doc.pdf"></iframe>
+                                <iframe src="https://drive.google.com/file/d/1BetkFCebAac3b4ATYMqDCr37Ec_zgFKV/preview"
+                                    allow="autoplay">
+                                </iframe>
                             </div>`,
-                "2.5.actividad": `<div class="visor-pdf">
-                                    <iframe src="docs/CursoAvanzado/Actividades/2.5.CursoAvanzado-act.pdf"></iframe>
-                                  </div>`,
+                "2.5.actividad":`<div class="visor-pdf">
+                                    <iframe src="https://drive.google.com/file/d/1rzzrpapbzv1ioO6bp8gE4TJDD06IGFOG/preview"
+                                        allow="autoplay">
+                                    </iframe>
+                                </div>`,
 
                 "2.6.doc": `<div class="visor-pdf">
-                                <iframe src="docs/CursoAvanzado/Documentos/2.6.CursoAvanzado-doc.pdf"></iframe>
+                                <iframe src="https://drive.google.com/file/d/1aZNnUKfHCu8s-YANRBOXVfOq9-sR7q2J/preview"
+                                    allow="autoplay">
+                                </iframe>
                             </div>`,
-                "2.6.actividad": `<div class="visor-pdf">
-                                    <iframe src="docs/CursoAvanzado/Actividades/2.6.CursoAvanzado-act.pdf"></iframe>
-                                  </div>`
+                "2.6.actividad":`<div class="visor-pdf">
+                                    <iframe src="https://drive.google.com/file/d/1k68AcSwBWvT0EPJ3MSMn1TrD1dpaloEj/preview"
+                                        allow="autoplay">
+                                    </iframe>
+                                </div>`
             };
             
             // Mostrar sección curso o progreso
