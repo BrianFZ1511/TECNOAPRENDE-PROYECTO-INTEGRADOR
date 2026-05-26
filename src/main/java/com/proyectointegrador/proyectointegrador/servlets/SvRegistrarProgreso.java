@@ -16,13 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SvRegistrarProgreso", urlPatterns = {"/SvRegistrarProgreso"})
 public class SvRegistrarProgreso extends HttpServlet {
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.sendRedirect("index.jsp");
     }
 
     @Override

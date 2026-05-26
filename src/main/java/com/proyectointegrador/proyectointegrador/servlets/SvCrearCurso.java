@@ -12,15 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "SvCrearCurso", urlPatterns = {"/SvCrearCurso"})
 public class SvCrearCurso extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.sendRedirect("panelInstructor.jsp");
     }
 
     @Override

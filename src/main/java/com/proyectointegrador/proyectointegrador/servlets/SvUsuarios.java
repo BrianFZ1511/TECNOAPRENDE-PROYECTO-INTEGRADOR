@@ -22,6 +22,13 @@ public class SvUsuarios extends HttpServlet {
     // Al menos 8 caracteres
     private static final int MIN_LONGITUD_CONTRASENA = 8;
     private static final int MAX_LONGITUD_CONTRASENA = 100;
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // GET no debe procesar login — redirigir al formulario
+        response.sendRedirect("login_registro.jsp");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

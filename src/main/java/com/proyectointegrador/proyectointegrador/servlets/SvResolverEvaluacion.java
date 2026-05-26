@@ -18,6 +18,12 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "SvResolverEvaluacion", urlPatterns = {"/SvResolverEvaluacion"})
 public class SvResolverEvaluacion extends HttpServlet {
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect("index.jsp");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -84,13 +90,6 @@ public class SvResolverEvaluacion extends HttpServlet {
         request.setAttribute("resultado", resultadoGuardado);
         request.setAttribute("intentos", resultadoGuardado.getIntentos());
         request.getRequestDispatcher("evaluacion.jsp").forward(request, response);
-    }
-
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendError(405, "GET no soportado en SvResolverEvaluacion");
     }
 
     @Override

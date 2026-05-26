@@ -10,15 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "SvEliminarActividad", urlPatterns = {"/SvEliminarActividad"})
 public class SvEliminarActividad extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.sendRedirect("panelAdmin.jsp");
     }
 
     @Override

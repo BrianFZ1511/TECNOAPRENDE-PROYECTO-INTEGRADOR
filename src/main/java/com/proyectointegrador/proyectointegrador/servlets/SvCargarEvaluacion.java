@@ -12,10 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SvCargarEvaluacion", urlPatterns = {"/SvCargarEvaluacion"})
 public class SvCargarEvaluacion extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,7 +29,7 @@ public class SvCargarEvaluacion extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.sendRedirect("index.jsp");
     }
 
     @Override

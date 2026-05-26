@@ -10,6 +10,13 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "SvCerrarSesion", urlPatterns = {"/SvCerrarSesion"})
 public class SvCerrarSesion extends HttpServlet {
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // GET no debe cerrar sesión — redirigir al inicio sin hacer nada
+        response.sendRedirect("index.jsp");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -34,13 +41,6 @@ public class SvCerrarSesion extends HttpServlet {
         }
 
         // Redirigir a la página principal
-        response.sendRedirect("index.jsp");
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // GET no debe cerrar sesión — redirigir al inicio sin hacer nada
         response.sendRedirect("index.jsp");
     }
 
