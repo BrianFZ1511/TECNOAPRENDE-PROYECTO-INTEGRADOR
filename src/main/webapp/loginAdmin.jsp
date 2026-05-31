@@ -17,27 +17,32 @@
                 <a href="index.jsp"><button>Panel Principal</button></a>
             </div>
         </header>
-        
+
         <div class="login-admin-container">
             <h1 class="formulario">Iniciar sesión</h1>
 
             <form action="SvLoginAdmin" method="POST" accept-charset="UTF-8" class="login-admin-form">
                 <h2>Administrador</h2>
 
-                <label>Nombre de Usuario</label>
-                <input type="text" name="usuario" placeholder="Ingrese su Nombre de Usuario" required>
+                <label>ID de Afiliado</label>
+                <input type="text" name="idAfiliado" placeholder="Ej: ADM001"
+                       maxlength="20" required style="text-transform: uppercase;"
+                       oninput="this.value = this.value.toUpperCase()">
 
                 <label>Contraseña</label>
-                <input type="password" name="contrasena" placeholder="Ingrese su Contraseña" required>
+                <input type="password" name="contrasena" placeholder="Ingrese su Contraseña"
+                       maxlength="200" required>
 
                 <button type="submit" class="boton_iniciosesion_registro">Ingresar</button>
             </form>
         </div>
         <%
-        String error = (String) request.getAttribute("error");
-        if (error != null) {
+            String error = (String) request.getAttribute("error");
+            if (error != null) {
         %>
-            <p style="color: red;"><%= error %></p>
+            <p style="color: red; text-align: center;">
+                <%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(error) %>
+            </p>
         <%
             }
         %>

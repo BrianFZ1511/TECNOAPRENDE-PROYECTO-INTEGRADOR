@@ -9,6 +9,9 @@
         return;
     }
     
+    String csrfToken = (String) session.getAttribute("csrfToken");
+    String adminId = admin.getAfiliado() != null ? admin.getAfiliado().getIdAfiliado() : "Admin";
+    
     int idCurso = Integer.parseInt(request.getParameter("idCurso"));
     Controladora control = new Controladora();
     Curso curso = control.traerCurso(idCurso);
@@ -25,9 +28,13 @@
     <body>
         <header class="encabezado">
             <img src="images/ITSZ-LCNTEZ.png" alt="Encabezado de logos" class="imagen-encabezado">
+            <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
             <div class="acciones">
-                <p><strong><%= admin.getNom_usuario() %></strong></p>
-                <a href="SvCerrarSesion"><button>Cerrar sesión</button></a>
+                <p><strong><%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(adminId) %></strong></p>
+                <form action="SvCerrarSesion" method="POST" style="display:inline;">
+                    <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
+                    <button type="submit">Cerrar sesión</button>
+                </form>
                 <a href="panelAdmin.jsp"><button>Panel Principal</button></a>
             </div>
         </header>
@@ -173,7 +180,7 @@
             </div>
             </div>
             <div class="creditos-equipo">
-                    <a href="creditos.jsp"><p>© 2025 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
+                    <a href="creditos.jsp"><p>© 2026 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
                 </div>
         </footer>
         <script>

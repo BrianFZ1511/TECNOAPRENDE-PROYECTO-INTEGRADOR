@@ -12,6 +12,10 @@
         response.sendRedirect("loginAdmin.jsp");
         return;
     }
+    
+    String csrfToken = (String) session.getAttribute("csrfToken");
+    String adminId = admin.getAfiliado() != null ? admin.getAfiliado().getIdAfiliado() : "Admin";
+    
     Controladora control = new Controladora();
     List<Curso> cursos = control.traerCursos();
     List<Instructor> instructores = control.traerInstructores();
@@ -28,9 +32,13 @@
 <body>
     <header class="encabezado">
         <img src="images/ITSZ-LCNTEZ.png" alt="Encabezado de logos" class="imagen-encabezado">
+        <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
         <div class="acciones">
-            <p><strong><%= admin.getNom_usuario() %></strong></p>
-            <a href="SvCerrarSesion"><button>Cerrar sesión</button></a>
+            <p><strong><%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(adminId) %></strong></p>
+            <form action="SvCerrarSesion" method="POST" style="display:inline;">
+                <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
+                <button type="submit">Cerrar sesión</button>
+            </form>
             <a href="panelAdmin.jsp"><button>Panel Principal</button></a>
         </div>
     </header>
@@ -53,7 +61,7 @@
             <td><%= c.getIdCurso() %></td>
             <td><%= c.getNombre() %></td>
             <td><%= c.getDescripcion() %></td>
-            <td><%= (i != null) ? i.getUsuario().getNombre() : "Sin asignar" %></td>
+            <td><%= (i != null && i.getUsuario() != null && i.getUsuario().getAfiliado() != null) ? org.apache.commons.text.StringEscapeUtils.escapeHtml4(i.getUsuario().getAfiliado().getNombre()) : "Sin asignar" %></td>
             <td>
                 <a href="listaActividades.jsp?idCurso=<%= c.getIdCurso() %>">
                     <button class="actividades">Actividades</button>
@@ -79,7 +87,7 @@
               <div class="select-options">
                 <% for (Instructor i : instructores) { %>
                   <div data-value="<%= i.getIdInstructor() %>">
-                    <%= i.getUsuario().getNombre() %> <%= i.getUsuario().getApellidos() %>
+                    <%= i.getUsuario().getAfiliado() != null ? org.apache.commons.text.StringEscapeUtils.escapeHtml4(i.getUsuario().getAfiliado().getNombre() + " " + i.getUsuario().getAfiliado().getApellidos()) : "" %>
                   </div>
                 <% } %>
               </div>
@@ -110,7 +118,7 @@
                         <%
                             for (Instructor inst : instructores) {
                         %>
-                            <option value="<%= inst.getIdInstructor() %>"><%= inst.getUsuario().getNombre() %> <%= inst.getUsuario().getApellidos() %></option>
+                            <option value="<%= inst.getIdInstructor() %>"><%= inst.getUsuario().getAfiliado() != null ? org.apache.commons.text.StringEscapeUtils.escapeHtml4(inst.getUsuario().getAfiliado().getNombre() + " " + inst.getUsuario().getAfiliado().getApellidos()) : "" %></option>
                         <%
                             }
                         %>
@@ -171,7 +179,7 @@
             </div>
             </div>
             <div class="creditos-equipo">
-                    <a href="creditos.jsp"><p>© 2025 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
+                    <a href="creditos.jsp"><p>© 2026 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
                 </div>
         </footer>
 

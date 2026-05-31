@@ -23,7 +23,7 @@
     <header class="encabezado">
         <img src="images/ITSZ-LCNTEZ.png" class="imagen-encabezado">
         <div class="acciones">
-            <p><strong><%= usuario.getNom_usuario() %></strong></p>
+            <p><strong><%= usuario.getAfiliado() != null ? org.apache.commons.text.StringEscapeUtils.escapeHtml4(usuario.getAfiliado().getIdAfiliado()) : "" %></strong></p>
             <a href="SvCerrarSesion?csrfToken=<%= csrfToken %>"><button>Cerrar sesión</button></a>
         </div>
     </header>

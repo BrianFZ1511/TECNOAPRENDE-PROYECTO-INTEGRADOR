@@ -155,4 +155,17 @@ public class InstructorJpaController implements Serializable {
             em.close();
         }
     }
+
+    public Instructor findByIdUsuario(int idUsuario) {
+        EntityManager em = getEntityManager();
+        try {
+            List<Instructor> result = em.createQuery(
+                "SELECT i FROM Instructor i WHERE i.usuario.id = :idUsuario", Instructor.class)
+                .setParameter("idUsuario", idUsuario)
+                .getResultList();
+            return result.isEmpty() ? null : result.get(0);
+        } finally {
+            em.close();
+        }
+    }
 }

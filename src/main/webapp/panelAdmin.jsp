@@ -16,6 +16,8 @@
     response.setHeader("X-Frame-Options", "DENY");
     response.setHeader("X-Content-Type-Options", "nosniff");
     response.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+
+    String idAfiliado = admin.getAfiliado() != null ? admin.getAfiliado().getIdAfiliado() : "Admin";
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,20 +30,22 @@
     <body>
         <header class="encabezado">
             <img src="images/ITSZ-LCNTEZ.png" alt="Encabezado de logos" class="imagen-encabezado">
+            <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
             <div class="acciones">
-                <p>Bienvenido, <strong><%= admin.getNom_usuario() %></strong> (Administrador)</p>
+                <p>Bienvenido, <strong><%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(idAfiliado) %></strong> (Administrador)</p>
                 <form action="SvCerrarSesion" method="POST" style="display:inline;">
                     <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
                     <button type="submit">Cerrar sesión</button>
                 </form>
             </div>
         </header>
-                
+
         <div class="titulo">
             <h1>Panel del Administrador</h1>
         </div>
 
         <div class="botones_admin">
+            <button class="listas lista_usuarios" onclick="location.href='listaAfiliados.jsp'">Afiliados</button>
             <button class="listas lista_usuarios" onclick="location.href='listaUsuarios.jsp'">Usuarios</button>
             <button class="listas lista_instructores" onclick="location.href='listaInstructores.jsp'">Instructores</button>
             <button class="listas lista_cursos" onclick="location.href='listaCursos.jsp'">Cursos</button>
@@ -63,7 +67,6 @@
                     </a>
                 </div>
             </div>
-
             <div class="casa">
                 <a href="https://lcntez.org.mx/">La Casa de los Niños de Tezonapa</a>
                 <div class="redes">
@@ -80,8 +83,8 @@
             </div>
             </div>
             <div class="creditos-equipo">
-                    <a href="creditos.jsp"><p>© 2025 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
-                </div>
+                <a href="creditos.jsp"><p>© 2026 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
+            </div>
         </footer>
     </body>
 </html>

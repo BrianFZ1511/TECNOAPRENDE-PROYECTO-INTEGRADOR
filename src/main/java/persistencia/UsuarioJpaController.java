@@ -16,14 +16,13 @@ public class UsuarioJpaController implements Serializable {
     public UsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
-    private EntityManagerFactory emf = null;
 
+    private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
+
     public UsuarioJpaController() {
         emf = JPAUtil.getEMF();
     }
@@ -143,15 +142,15 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-    
-    public Usuario FindUsuarioByName(String nomUsuario) {
+
+    public Usuario findUsuarioByIdAfiliado(String idAfiliado) {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("SELECT u FROM Usuario u WHERE u.nom_usuario = :nom", Usuario.class)
-                     .setParameter("nom", nomUsuario)
-                     .getSingleResult();
+            return em.createQuery(
+                "SELECT u FROM Usuario u WHERE u.afiliado.idAfiliado = :id", Usuario.class
+            ).setParameter("id", idAfiliado).getSingleResult();
         } catch (Exception e) {
-            return null; 
+            return null;
         } finally {
             em.close();
         }
@@ -180,15 +179,13 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-    
-    public boolean existeUsuarioPorNombre(String nomUsuario) {
+
+    public boolean existeUsuarioPorAfiliado(String idAfiliado) {
         EntityManager em = getEntityManager();
         try {
             Long count = em.createQuery(
-                "SELECT COUNT(u) FROM Usuario u WHERE u.nom_usuario = :nombre", Long.class
-            )
-            .setParameter("nombre", nomUsuario)
-            .getSingleResult();
+                "SELECT COUNT(u) FROM Usuario u WHERE u.afiliado.idAfiliado = :id", Long.class
+            ).setParameter("id", idAfiliado).getSingleResult();
             return count > 0;
         } finally {
             em.close();

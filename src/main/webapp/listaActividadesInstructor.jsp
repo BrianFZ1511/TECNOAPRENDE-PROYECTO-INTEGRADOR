@@ -13,6 +13,7 @@
     Controladora control = new Controladora();
     Curso curso = control.traerCurso(idCurso);
     List<Actividad> actividades = control.traerActividadesPorCurso(idCurso);
+    String idAfiliado = usuario.getAfiliado() != null ? usuario.getAfiliado().getIdAfiliado() : "Instructor";
 %>
 <!DOCTYPE html>
 <html>
@@ -25,9 +26,16 @@
     <body>
         <header class="encabezado">
             <img src="images/ITSZ-LCNTEZ.png" alt="Encabezado de logos" class="imagen-encabezado">
+            <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
             <div class="acciones">
-                <p><strong><%= usuario.getNom_usuario() %></strong></p>
-                <a href="SvCerrarSesion"><button>Cerrar sesión</button></a>
+                <p>Bienvenido, 
+                    <strong><%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(idAfiliado) %></strong> 
+                    (Instructor)
+                </p>
+                <form action="SvCerrarSesion" method="POST" style="display:inline;">
+                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+                    <button type="submit">Cerrar sesión</button>
+                </form>
                 <a href="panelInstructor.jsp"><button>Panel Principal</button></a>
             </div>
         </header>
@@ -164,7 +172,7 @@
             </div>
             </div>
             <div class="creditos-equipo">
-                    <a href="creditos.jsp"><p>© 2025 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
+                    <a href="creditos.jsp"><p>© 2026 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
                 </div>
         </footer>
         <script>

@@ -93,7 +93,9 @@ public class SvRestablecerContrasena extends HttpServlet {
         // 7. Redirigir al instructor mostrándole la contraseña temporal una vez
         String url = "listaEstudiantes.jsp?idCurso=" + idCurso
                 + "&temp=" + URLEncoder.encode(temporal, StandardCharsets.UTF_8.name())
-                + "&tempUser=" + URLEncoder.encode(estudiante.getNom_usuario(), StandardCharsets.UTF_8.name());
+                + "&tempUser=" + URLEncoder.encode(
+                    estudiante.getAfiliado() != null ? estudiante.getAfiliado().getIdAfiliado() : String.valueOf(idUsuario),
+                    StandardCharsets.UTF_8.name());
         response.sendRedirect(url);
     }
 

@@ -14,6 +14,39 @@ public class Controladora {
     private final double MIN_PARA_APROBAR = 60.0;
     private final int MAX_INTENTOS = 2;
 
+    // --- Afiliado ---
+    public void crearAfiliado(Afiliado afiliado) {
+        controlPersis.crearAfiliado(afiliado);
+    }
+
+    public List<Afiliado> traerAfiliados() {
+        return controlPersis.traerAfiliados();
+    }
+
+    public List<Afiliado> traerAfiliadosPorTipo(String tipoPersona) {
+        return controlPersis.traerAfiliadosPorTipo(tipoPersona);
+    }
+
+    public Afiliado traerAfiliado(String idAfiliado) {
+        return controlPersis.traerAfiliado(idAfiliado);
+    }
+
+    public void editarAfiliado(Afiliado afiliado) {
+        controlPersis.editarAfiliado(afiliado);
+    }
+
+    public void borrarAfiliado(String idAfiliado) {
+        controlPersis.borrarAfiliado(idAfiliado);
+    }
+
+    public boolean existeAfiliado(String idAfiliado) {
+        return controlPersis.existeAfiliado(idAfiliado);
+    }
+
+    public boolean afiliadoTieneUsuario(String idAfiliado) {
+        return controlPersis.afiliadoTieneUsuario(idAfiliado);
+    }
+
     // --- Usuario ---
     public void crearUsuario(Usuario usuario) {
         controlPersis.crearUsuario(usuario);
@@ -35,8 +68,12 @@ public class Controladora {
         controlPersis.editarUsuario(usuario);
     }
 
-    public boolean existeUsuario(String nom_usuario) {
-        return controlPersis.existeUsuario(nom_usuario);
+    public boolean existeUsuarioPorAfiliado(String idAfiliado) {
+        return controlPersis.existeUsuarioPorAfiliado(idAfiliado);
+    }
+
+    public Usuario buscarUsuarioPorIdAfiliado(String idAfiliado) {
+        return controlPersis.buscarUsuarioPorIdAfiliado(idAfiliado);
     }
 
     // --- Instructor ---
@@ -55,19 +92,19 @@ public class Controladora {
     public Instructor traerInstructor(int id_editar) {
         return controlPersis.traerInstructor(id_editar);
     }
-    
-    public Usuario buscarUsuarioPorNombre(String nomUsuario) {
-        return controlPersis.buscarUsuarioPorNombre(nomUsuario);
-    }
 
     public void editarInstructor(Instructor instructor) {
         controlPersis.editarInstructor(instructor);
     }
-    
+
+    public Instructor buscarInstructorPorIdUsuario(int idUsuario) {
+        return controlPersis.buscarInstructorPorIdUsuario(idUsuario);
+    }
+
     public List<Curso> traerCursosPorInstructor(int idInstructor) {
         return controlPersis.traerCursosPorInstructor(idInstructor);
     }
-    
+
     // --- Administrador ---
     public void crearAdministrador(Administrador administrador) {
         controlPersis.crearAdministrador(administrador);
@@ -109,7 +146,7 @@ public class Controladora {
     public void editarCurso(Curso curso) {
         controlPersis.editarCurso(curso);
     }
-    
+
     public List<Usuario> traerEstudiantesPorCurso(int idCurso) {
         return controlPersis.traerEstudiantesPorCurso(idCurso);
     }
@@ -130,7 +167,7 @@ public class Controladora {
     public Actividad traerActividad(int id_editar) {
         return controlPersis.traerActividad(id_editar);
     }
-    
+
     public List<Actividad> traerActividadesPorCurso(int idCurso) {
         return controlPersis.traerActividadesPorCurso(idCurso);
     }
@@ -155,7 +192,7 @@ public class Controladora {
     public Progreso traerProgreso(int id_editar) {
         return controlPersis.traerProgreso(id_editar);
     }
-    
+
     public List<Progreso> traerProgresoPorCursoYUsuario(int idCurso, int idUsuario) {
         return controlPersis.traerProgresoPorCursoYUsuario(idCurso, idUsuario);
     }
@@ -163,13 +200,12 @@ public class Controladora {
     public void editarProgreso(Progreso progreso) {
         controlPersis.editarProgreso(progreso);
     }
-    
+
     public void actualizarProgreso(int idProgreso, String estado, int calificacion) {
         controlPersis.actualizarProgreso(idProgreso, estado, calificacion);
     }
-    
+
     public void inicializarProgresoParaUsuario(int idUsuario) {
-        System.out.println(">>> Inicializando progreso para usuario ID: " + idUsuario);
         Usuario usuario = this.traerUsuario(idUsuario);
 
         List<Curso> cursos = this.traerCursos();
@@ -179,12 +215,11 @@ public class Controladora {
             List<Actividad> actividades = this.traerActividadesPorCurso(curso.getIdCurso());
 
             for (Actividad act : actividades) {
-                System.out.println("Creando progreso para actividad: " + act.getTitulo());
+
                 Progreso prog = new Progreso();
                 prog.setUsuario(usuario);
                 prog.setCurso(curso);
                 prog.setActividad(act);
-
                 prog.setEstado("No iniciado");
                 prog.setCalificacion(0);
                 prog.setFecha(new java.util.Date());
@@ -193,7 +228,7 @@ public class Controladora {
             }
         }
     }
-    
+
     // --- EvaluaciónFinal ---
     public EvaluacionFinal getEvaluacionPorCurso(Integer idCurso) {
         List<EvaluacionFinal> l = controlPersis.obtenerEvaluacionesPorCurso(idCurso);
@@ -209,25 +244,21 @@ public class Controladora {
         long intentos = controlPersis.contarIntentos(idUsuario, idEvaluacion);
         return intentos < MAX_INTENTOS;
     }
-    
+
     public long contarIntentos(Integer idUsuario, Integer idEvaluacion) {
-        return (int) controlPersis.contarIntentos(idUsuario, idEvaluacion);
+        return controlPersis.contarIntentos(idUsuario, idEvaluacion);
     }
 
-    
     // --- PreguntaEvaluación ---
     public Map<String, Object> generarResumen(Integer idEvaluacion, Map<Integer, String> respuestas) {
-
         List<PreguntaEvaluacion> preguntas = getPreguntasDeEvaluacion(idEvaluacion);
 
         int correctas = 0;
         List<Map<String, String>> detalles = new ArrayList<>();
 
         for (PreguntaEvaluacion p : preguntas) {
-
             String respUsuario = respuestas.get(p.getIdPregunta());
             boolean ok = respUsuario != null && p.getRespuestaCorrecta().equalsIgnoreCase(respUsuario);
-
             if (ok) correctas++;
 
             Map<String, String> det = new HashMap<>();
@@ -236,7 +267,6 @@ public class Controladora {
             det.put("respuestaCorrecta", p.getRespuestaCorrecta());
             det.put("resultado", ok ? "Correcto" : "Incorrecto");
             det.put("correcta", ok ? "true" : "false");
-
             detalles.add(det);
         }
 
@@ -254,8 +284,6 @@ public class Controladora {
         return resumen;
     }
 
-
-    
     // --- Resultado Evaluación ---
     public ResultadoEvaluacion procesarYGuardarResultado(Integer idUsuario, Integer idEvaluacion, Map<Integer, String> respuestas) {
         List<PreguntaEvaluacion> preguntas = getPreguntasDeEvaluacion(idEvaluacion);
@@ -286,22 +314,19 @@ public class Controladora {
         r.setIntentos((int) prevIntentos + 1);
 
         controlPersis.guardarResultado(r);
-
         return r;
     }
-    
+
     public double traerCalificacionEvaluacion(int idUsuario, int idCurso) {
         EvaluacionFinal evaluacion = getEvaluacionPorCurso(idCurso);
         if (evaluacion == null) return 0;
 
         int idEvaluacion = evaluacion.getIdEvaluacion();
-
         List<ResultadoEvaluacion> resultados = controlPersis.obtenerResultadosPorUsuarioYEvaluacion(idUsuario, idEvaluacion);
 
         if (resultados != null && !resultados.isEmpty()) {
-            return resultados.get(0).getCalificacion(); 
+            return resultados.get(0).getCalificacion();
         }
-
         return 0;
     }
 }

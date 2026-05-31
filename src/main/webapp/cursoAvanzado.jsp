@@ -65,7 +65,7 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Curso Principiante - TecnoAprende</title>
+        <title>Curso Avanzado - TecnoAprende</title>
         <link rel="stylesheet" href="styles.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
@@ -76,8 +76,11 @@
             <img src="images/ITSZ-LCNTEZ.png" alt="Encabezado de logos" class="imagen-encabezado">
             <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
             <div class="acciones">
-                <p><strong><%= usuario.getNom_usuario() %></strong></p>
-                <a href="SvCerrarSesion"><button>Cerrar sesión</button></a>
+                <p><strong><%= usuario.getAfiliado() != null ? org.apache.commons.text.StringEscapeUtils.escapeHtml4(usuario.getAfiliado().getIdAfiliado()) : "" %></strong></p>
+                <form action="SvCerrarSesion" method="POST" style="display:inline;">
+                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+                    <button type="submit">Cerrar sesión</button>
+                </form>
                 <a href="index.jsp"><button>Panel Principal</button></a>
             </div>
         </header>

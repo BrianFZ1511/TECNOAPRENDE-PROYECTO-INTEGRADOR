@@ -36,6 +36,8 @@
     }
 
     int porcentaje = total > 0 ? (completadas * 100 / total) : 0;
+    
+    String idAfiliado = usuario.getAfiliado() != null ? usuario.getAfiliado().getIdAfiliado() : "Instructor";
 %>
 
 <!DOCTYPE html>
@@ -50,16 +52,28 @@
 
 <header class="encabezado">
     <img src="images/ITSZ-LCNTEZ.png" class="imagen-encabezado">
+    <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
     <div class="acciones">
-        <p><strong><%= usuario.getNom_usuario() %></strong></p>
-        <a href="SvCerrarSesion"><button>Cerrar sesión</button></a>
+        <p>Bienvenido, 
+            <strong><%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(idAfiliado) %></strong> 
+            (Instructor)
+        </p>
+        <form action="SvCerrarSesion" method="POST" style="display:inline;">
+            <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+            <button type="submit">Cerrar sesión</button>
+        </form>
         <a href="panelInstructor.jsp"><button>Panel Principal</button></a>
     </div>
 </header>
 
 <main class="contenedor_lista">
 
-    <h1>Progreso de <%= estudiante.getNombre() + " " + estudiante.getApellidos() %></h1>
+    <h1>Progreso de <%
+        if (estudiante != null && estudiante.getAfiliado() != null) {
+            out.print(org.apache.commons.text.StringEscapeUtils.escapeHtml4(
+                estudiante.getAfiliado().getNombre() + " " + estudiante.getAfiliado().getApellidos()));
+        }
+    %></h1>
     <h3>Porcentaje de avance: <%= porcentaje %>%</h3>
 
     <table>
@@ -96,17 +110,15 @@
                 <hr>
 
                 <form action="SvProgresoInstructor" method="POST">
+                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
 
-                    <!-- Si no existe progreso, enviar idProgreso = 0 -->
                     <input type="hidden" name="idProgreso" value="<%= (p != null ? p.getIdProgreso() : 0) %>">
-
                     <input type="hidden" name="idActividad" value="<%= a.getIdActividad() %>">
                     <input type="hidden" name="idCurso" value="<%= idCurso %>">
                     <input type="hidden" name="idUsuario" value="<%= idUsuario %>">
 
                     <label>Calificación:</label>
-                    <input type="number" name="calificacion"
-                           min="0" max="100"
+                    <input type="number" name="calificacion" min="0" max="100"
                            value="<%= (p != null ? p.getCalificacion() : "") %>">
 
                     <label>Estado:</label>
@@ -115,10 +127,12 @@
                             <%= (p != null && "pendiente".equalsIgnoreCase(p.getEstado())) ? "selected" : "" %>>
                             Pendiente
                         </option>
+
                         <option value="en revisión"
                             <%= (p != null && "en revisión".equalsIgnoreCase(p.getEstado())) ? "selected" : "" %>>
                             En revisión
                         </option>
+
                         <option value="completado"
                             <%= (p != null && "completado".equalsIgnoreCase(p.getEstado())) ? "selected" : "" %>>
                             Completado
@@ -129,6 +143,7 @@
                         <button type="button" onclick="cerrarModal(<%= a.getIdActividad() %>)">Cerrar</button>
                         <button type="submit">Guardar</button>
                     </div>
+
                 </form>
 
             </div>
@@ -173,7 +188,7 @@
         </div>
         </div>
         <div class="creditos-equipo">
-                <a href="creditos.jsp"><p>© 2025 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
+                <a href="creditos.jsp"><p>© 2026 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
             </div>
     </footer>
 

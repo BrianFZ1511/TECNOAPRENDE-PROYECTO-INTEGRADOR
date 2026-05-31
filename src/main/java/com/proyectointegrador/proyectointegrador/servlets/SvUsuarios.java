@@ -1,11 +1,11 @@
 package com.proyectointegrador.proyectointegrador.servlets;
 
+import Logica.Afiliado;
 import Logica.Usuario;
 import Logica.Controladora;
 import Logica.PasswordUtil;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,17 +16,12 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "SvUsuarios", urlPatterns = {"/SvUsuarios"})
 public class SvUsuarios extends HttpServlet {
 
-    // Solo letras, números, guiones y guion bajo. Sin espacios.
-    private static final Pattern PATRON_USUARIO = Pattern.compile("^[a-zA-Z0-9_\\-]{3,50}$");
-
-    // Al menos 8 caracteres
     private static final int MIN_LONGITUD_CONTRASENA = 8;
     private static final int MAX_LONGITUD_CONTRASENA = 100;
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // GET no debe procesar login — redirigir al formulario
         response.sendRedirect("login_registro.jsp");
     }
 
@@ -37,40 +32,20 @@ public class SvUsuarios extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        String nombre     = request.getParameter("nombre");
-        String apellidos  = request.getParameter("apellidos");
-        String nom_usuario = request.getParameter("usuario");
+        String idAfiliado = request.getParameter("idAfiliado");
         String contrasena = request.getParameter("contrasena");
 
         // --- 1. VALIDACIÓN DE CAMPOS OBLIGATORIOS ---
-        if (esVacio(nombre) || esVacio(apellidos)
-                || esVacio(nom_usuario) || esVacio(contrasena)) {
+        if (esVacio(idAfiliado) || esVacio(contrasena)) {
             request.setAttribute("errorMessage", "Todos los campos son obligatorios.");
             request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
             return;
         }
 
-        nombre     = nombre.trim();
-        apellidos  = apellidos.trim();
-        nom_usuario = nom_usuario.trim();
+        idAfiliado = idAfiliado.trim().toUpperCase();
 
-        // --- 2. VALIDAR LONGITUD Y FORMATO ---
-        if (nombre.length() > 100) {
-            request.setAttribute("errorMessage", "El nombre no puede superar 100 caracteres.");
-            request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
-            return;
-        }
-
-        if (apellidos.length() > 100) {
-            request.setAttribute("errorMessage", "Los apellidos no pueden superar 100 caracteres.");
-            request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
-            return;
-        }
-
-        if (!PATRON_USUARIO.matcher(nom_usuario).matches()) {
-            request.setAttribute("errorMessage",
-                "El nombre de usuario solo puede contener letras, números, guión y guión bajo. "
-                + "Mínimo 3 caracteres, máximo 50.");
+        if (idAfiliado.length() > 20) {
+            request.setAttribute("errorMessage", "El ID de afiliado no puede superar 20 caracteres.");
             request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
             return;
         }
@@ -88,25 +63,41 @@ public class SvUsuarios extends HttpServlet {
             return;
         }
 
-        // --- 3. VERIFICAR SI EL USUARIO YA EXISTE ---
         Controladora control = new Controladora();
 
-        if (control.existeUsuario(nom_usuario)) {
-            request.setAttribute("errorMessage", "El nombre de usuario ya está registrado.");
+        // --- 2. VERIFICAR QUE EL AFILIADO EXISTA EN EL PADRÓN ---
+        Afiliado afiliado = control.traerAfiliado(idAfiliado);
+        if (afiliado == null) {
+            request.setAttribute("errorMessage",
+                "El ID de afiliado no existe en el padrón. Verifique el dato e intente de nuevo.");
             request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
             return;
         }
 
-        // --- 4. HASHEAR LA CONTRASEÑA ANTES DE GUARDAR ---
+        // --- 3. VERIFICAR QUE NO TENGA YA UN USUARIO REGISTRADO ---
+        if (control.afiliadoTieneUsuario(idAfiliado)) {
+            request.setAttribute("errorMessage",
+                "Este ID de afiliado ya tiene una cuenta registrada.");
+            request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
+            return;
+        }
+
+        // --- 4. VERIFICAR QUE EL TIPO DE PERSONA SEA 'afiliado' ---
+        if (!"afiliado".equalsIgnoreCase(afiliado.getTipoPersona())) {
+            request.setAttribute("errorMessage",
+                "Este ID no corresponde a un afiliado. El registro público es exclusivo para afiliados.");
+            request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
+            return;
+        }
+
+        // --- 5. HASHEAR LA CONTRASEÑA Y CREAR EL USUARIO ---
         String contrasenaHasheada = PasswordUtil.hashear(contrasena);
 
-        // --- 5. CREAR Y GUARDAR EL USUARIO ---
         Usuario usuario = new Usuario();
-        usuario.setNombre(nombre);
-        usuario.setApellidos(apellidos);
-        usuario.setNom_usuario(nom_usuario);
-        usuario.setContrasena(contrasenaHasheada); // Siempre guardar el hash, nunca texto plano
+        usuario.setAfiliado(afiliado);
+        usuario.setContrasena(contrasenaHasheada);
         usuario.setRol("usuario");
+        usuario.setRequiereCambioContrasena(false);
 
         control.crearUsuario(usuario);
 
@@ -117,11 +108,8 @@ public class SvUsuarios extends HttpServlet {
         HttpSession session = request.getSession(true);
         session.setAttribute("usuarioLogueado", usuario);
 
-        // Generar token CSRF para la nueva sesión
         String csrfToken = UUID.randomUUID().toString();
         session.setAttribute("csrfToken", csrfToken);
-
-        // Tiempo de inactividad máximo: 30 minutos
         session.setMaxInactiveInterval(30 * 60);
 
         response.sendRedirect("index.jsp");
@@ -133,6 +121,6 @@ public class SvUsuarios extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Registra usuarios con contraseña hasheada (BCrypt) y validación de campos";
+        return "Registra usuarios del padrón (afiliado) con validación, BCrypt y progreso inicial";
     }
 }

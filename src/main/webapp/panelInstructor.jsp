@@ -7,6 +7,7 @@
         response.sendRedirect("login_registro.jsp");
         return;
     }
+    String idAfiliado = usuario.getAfiliado() != null ? usuario.getAfiliado().getIdAfiliado() : "Instructor";
 %>
 <!DOCTYPE html>
 <html>
@@ -19,9 +20,16 @@
     <body>
         <header class="encabezado">
             <img src="images/ITSZ-LCNTEZ.png" class="imagen-encabezado">
+            <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
             <div class="acciones">
-                <p>Bienvenido, <strong><%= usuario.getNom_usuario() %></strong> (Instructor)</p>
-                <a href="SvCerrarSesion"><button>Cerrar sesión</button></a>
+                <p>Bienvenido, 
+                    <strong><%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(idAfiliado) %></strong> 
+                    (Instructor)
+                </p>
+                <form action="SvCerrarSesion" method="POST" style="display:inline;">
+                    <input type="hidden" name="csrfToken" value="<%= session.getAttribute("csrfToken") %>">
+                    <button type="submit">Cerrar sesión</button>
+                </form>
             </div>
         </header>
 
@@ -49,7 +57,6 @@
                     </a>
                 </div>
             </div>
-
             <div class="casa">
                 <a href="https://lcntez.org.mx/">La Casa de los Niños de Tezonapa</a>
                 <div class="redes">
@@ -66,8 +73,8 @@
             </div>
             </div>
             <div class="creditos-equipo">
-                    <a href="creditos.jsp"><p>© 2025 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
-                </div>
+                <a href="creditos.jsp"><p>© 2026 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
+            </div>
         </footer>
     </body>
 </html>

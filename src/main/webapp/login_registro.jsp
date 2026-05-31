@@ -2,21 +2,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    // Prevenir que la página quede en caché del navegador
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
 
-    // Si ya hay sesión activa, redirigir al inicio
     if (session.getAttribute("usuarioLogueado") != null) {
         response.sendRedirect("index.jsp");
         return;
     }
 
-    // Recuperar el token CSRF de la sesión (si ya existe)
-    // El token se genera en SvInicioSesion y SvUsuarios al iniciar sesión
-    // Para el formulario de login/registro no es obligatorio (no hay sesión aún),
-    // pero lo incluimos si ya existe por seguridad adicional.
     String csrfToken = (String) session.getAttribute("csrfToken");
 %>
 
@@ -53,20 +47,20 @@
                     <h1 class="formulario">Iniciar Sesión</h1>
                     <form action="SvInicioSesion" method="POST" accept-charset="UTF-8" autocomplete="off">
 
-                        <%-- Token CSRF (si la sesión ya lo tiene) --%>
                         <% if (csrfToken != null) { %>
                             <input type="hidden" name="csrfToken" value="<%= csrfToken %>">
                         <% } %>
 
                         <p>
-                            <label for="loginUsuario">Usuario:</label>
+                            <label for="loginIdAfiliado">ID de Afiliado:</label>
                             <input type="text"
-                                   id="loginUsuario"
-                                   name="usuario"
-                                   placeholder="Ingrese su Nombre de Usuario"
-                                   maxlength="50"
+                                   id="loginIdAfiliado"
+                                   name="idAfiliado"
+                                   placeholder="Ej: AF001"
+                                   maxlength="20"
                                    required
-                                   autocomplete="username">
+                                   autocomplete="username"
+                                   style="text-transform: uppercase;">
                         </p>
                         <p>
                             <label for="loginContrasena">Contraseña:</label>
@@ -81,53 +75,34 @@
                         <button type="submit" class="boton_iniciosesion_registro">Iniciar sesión</button>
                     </form>
 
-                    <%-- Mensaje de error de inicio de sesión --%>
                     <%
                         String error = (String) request.getAttribute("error");
                         if (error != null) {
                     %>
-                        <p style="color: red; text-align: center;"><%= error %></p>
+                        <p style="color: red; text-align: center;"><%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(error) %></p>
                     <% } %>
                 </div>
 
                 <%-- ===== FORMULARIO DE REGISTRO ===== --%>
                 <div id="register" class="tab-content">
                     <h1 class="formulario">Registrarse</h1>
+                    <p style="text-align:center; color:#555; font-size:0.9em;">
+                        Solo afiliados registrados en el padrón pueden crear una cuenta.
+                    </p>
                     <form action="SvUsuarios" id="miFormulario" method="POST"
                           accept-charset="UTF-8" autocomplete="off"
                           onsubmit="return validarFormularioRegistro()">
 
                         <p>
-                            <label for="regNombre">Nombre:</label>
+                            <label for="regIdAfiliado">ID de Afiliado:</label>
                             <input type="text"
-                                   id="regNombre"
-                                   name="nombre"
-                                   placeholder="Ingrese su Nombre"
-                                   maxlength="100"
+                                   id="regIdAfiliado"
+                                   name="idAfiliado"
+                                   placeholder="Ej: AF001"
+                                   maxlength="20"
                                    required
-                                   autocomplete="given-name">
-                        </p>
-                        <p>
-                            <label for="regApellidos">Apellidos:</label>
-                            <input type="text"
-                                   id="regApellidos"
-                                   name="apellidos"
-                                   placeholder="Ingrese sus Apellidos"
-                                   maxlength="100"
-                                   required
-                                   autocomplete="family-name">
-                        </p>
-                        <p>
-                            <label for="regUsuario">Nombre de Usuario:</label>
-                            <input type="text"
-                                   id="regUsuario"
-                                   name="usuario"
-                                   placeholder="Sin espacios. Ej: juan_perez"
-                                   maxlength="50"
-                                   pattern="[a-zA-Z0-9_\-]{3,50}"
-                                   title="Solo letras, números, guión y guión bajo. Mínimo 3 caracteres."
-                                   required
-                                   autocomplete="username">
+                                   autocomplete="off"
+                                   style="text-transform: uppercase;">
                         </p>
                         <p>
                             <label for="regContrasena">Contraseña:</label>
@@ -152,12 +127,11 @@
                         <button type="submit" class="boton_iniciosesion_registro">Registrarse</button>
                     </form>
 
-                    <%-- Mensaje de error de registro --%>
                     <%
                         String errorMessage = (String) request.getAttribute("errorMessage");
                         if (errorMessage != null) {
                     %>
-                        <div style="color:red; text-align: center;"><%= errorMessage %></div>
+                        <div style="color:red; text-align: center;"><%= org.apache.commons.text.StringEscapeUtils.escapeHtml4(errorMessage) %></div>
                     <% } %>
                 </div>
 
@@ -165,35 +139,23 @@
         </div>
 
         <script>
-            // ===== Validación del formulario de registro en el cliente =====
             function validarFormularioRegistro() {
                 const contrasena = document.getElementById('regContrasena').value;
                 const confirmar  = document.getElementById('regConfirmar').value;
-                const usuario    = document.getElementById('regUsuario').value;
 
-                // Verificar que las contraseñas coincidan
                 if (contrasena !== confirmar) {
                     alert('Las contraseñas no coinciden. Por favor, verifique.');
                     return false;
                 }
 
-                // Verificar longitud mínima
                 if (contrasena.length < 8) {
                     alert('La contraseña debe tener al menos 8 caracteres.');
-                    return false;
-                }
-
-                // Verificar formato del nombre de usuario
-                const patronUsuario = /^[a-zA-Z0-9_\-]{3,50}$/;
-                if (!patronUsuario.test(usuario)) {
-                    alert('El nombre de usuario solo puede contener letras, números, guión y guión bajo. Mínimo 3 caracteres.');
                     return false;
                 }
 
                 return true;
             }
 
-            // ===== Tabs de login / registro =====
             function showTab(tabId) {
                 document.querySelectorAll('.tab-content').forEach(div => {
                     div.classList.remove('active');
@@ -215,11 +177,17 @@
                 }
             }
 
-            // Abrir la pestaña correcta según el parámetro de la URL
             document.addEventListener('DOMContentLoaded', () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const initialTab = urlParams.get('tab');
                 showTab(initialTab === 'register' ? 'register' : 'login');
+            });
+
+            document.getElementById('regIdAfiliado').addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+            document.getElementById('loginIdAfiliado').addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
             });
         </script>
     </body>

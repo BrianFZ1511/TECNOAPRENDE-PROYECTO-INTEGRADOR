@@ -36,7 +36,7 @@
 
                 <c:otherwise>
                     <p>Bienvenido, 
-                       <strong>${fn:escapeXml(sessionScope.usuarioLogueado.nom_usuario)}</strong>
+                       <strong>${fn:escapeXml(sessionScope.usuarioLogueado.afiliado.idAfiliado)}</strong>
                     </p>
 
                     <form action="SvCerrarSesion" method="POST" style="display:inline;">
@@ -50,7 +50,7 @@
           
         <!-- Barra de navegación tipo Capacítate -->
         <nav class="barra-pasos">
-            <div class="paso paso1">
+            <div class="paso paso1" onclick="abrirModalBienvenida()" style="cursor:pointer;">
                 <span class="numero">1</span>
                 <span class="texto">Bienvenida</span>
             </div>
@@ -153,6 +153,31 @@
 
             <% } %>
         </section>
+        
+    <!-- MODAL BIENVENIDA -->
+    <div id="modalBienvenida" class="modal-bienvenida">
+
+        <div class="contenido-modal-bienvenida">
+
+            <button class="cerrar-modal-bienvenida" onclick="cerrarModalBienvenida()">
+                &times;
+            </button>
+
+            <h2>¡Bienvenido a TECNOAPRENDE!</h2>
+
+            <div class="video-bienvenida">
+                <iframe
+                    id="youtubeVideo"
+                    src="https://www.youtube.com/embed/-W_ojeSTUwM"
+                    title="Video de Bienvenida"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        </div>
+    </div>
 
     <!-- Pie de página -->
     <footer class="pie_de_pagina">
@@ -192,19 +217,57 @@
             </div>
     </footer>
     <script>
-    let index = 0;
-    const slides = document.querySelectorAll(".slide");
-    const dots = document.querySelectorAll(".dot");
+        let index = 0;
+        const slides = document.querySelectorAll(".slide");
+        const dots = document.querySelectorAll(".dot");
 
-    setInterval(() => {
-        slides[index].classList.remove("activo");
-        dots[index].classList.remove("activo");
+        setInterval(() => {
+            slides[index].classList.remove("activo");
+            dots[index].classList.remove("activo");
 
-        index = (index + 1) % slides.length;
+            index = (index + 1) % slides.length;
 
-        slides[index].classList.add("activo");
-        dots[index].classList.add("activo");
-    }, 5000);
+            slides[index].classList.add("activo");
+            dots[index].classList.add("activo");
+        }, 5000);
+        
+        const modalBienvenida = document.getElementById("modalBienvenida");
+
+        function abrirModalBienvenida() {
+            modalBienvenida.style.display = "flex";
+        }
+
+        function cerrarModalBienvenida() {
+
+            modalBienvenida.style.display = "none";
+
+            // Detener video al cerrar
+            const iframe = document.getElementById("youtubeVideo");
+            iframe.src = iframe.src;
+        }
+
+        // Cerrar al dar clic fuera
+        window.addEventListener("click", function(e) {
+
+            if (e.target === modalBienvenida) {
+                cerrarModalBienvenida();
+            }
+
+        });
+
+        // Mostrar SOLO la primera vez
+        window.addEventListener("load", function() {
+
+            const yaVioBienvenida = localStorage.getItem("bienvenidaVista");
+
+            if (!yaVioBienvenida) {
+
+                abrirModalBienvenida();
+
+                localStorage.setItem("bienvenidaVista", "true");
+            }
+
+        });
     </script>
 
     </body>

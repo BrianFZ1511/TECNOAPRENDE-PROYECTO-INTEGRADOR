@@ -3,6 +3,7 @@ package persistencia;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Logica.Afiliado;
 import Logica.Usuario;
 import Logica.Instructor;
 import Logica.Administrador;
@@ -16,6 +17,7 @@ import persistencia.exceptions.NonexistentEntityException;
 
 public class ControladoraPersistencia {
 
+    AfiliadoJpaController afiliadoJpa = new AfiliadoJpaController();
     UsuarioJpaController usuarioJpa = new UsuarioJpaController();
     InstructorJpaController instructorJpa = new InstructorJpaController();
     AdministradorJpaController administradorJpa = new AdministradorJpaController();
@@ -25,6 +27,48 @@ public class ControladoraPersistencia {
     EvaluacionFinalJpaController evaluacionfinalJpa = new EvaluacionFinalJpaController();
     PreguntaEvaluacionJpaController preguntaevaluacionJpa = new PreguntaEvaluacionJpaController();
     ResultadoEvaluacionJpaController resultadoevaluacionJpa = new ResultadoEvaluacionJpaController();
+
+    // ------------------- Afiliado -------------------
+
+    public void crearAfiliado(Afiliado afiliado) {
+        afiliadoJpa.create(afiliado);
+    }
+
+    public List<Afiliado> traerAfiliados() {
+        return afiliadoJpa.findAll();
+    }
+
+    public List<Afiliado> traerAfiliadosPorTipo(String tipoPersona) {
+        return afiliadoJpa.findByTipoPersona(tipoPersona);
+    }
+
+    public Afiliado traerAfiliado(String idAfiliado) {
+        return afiliadoJpa.findAfiliado(idAfiliado);
+    }
+
+    public void editarAfiliado(Afiliado afiliado) {
+        try {
+            afiliadoJpa.edit(afiliado);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void borrarAfiliado(String idAfiliado) {
+        try {
+            afiliadoJpa.destroy(idAfiliado);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public boolean existeAfiliado(String idAfiliado) {
+        return afiliadoJpa.existeAfiliado(idAfiliado);
+    }
+
+    public boolean afiliadoTieneUsuario(String idAfiliado) {
+        return afiliadoJpa.afiliadoTieneUsuario(idAfiliado);
+    }
 
     // ------------------- Usuario -------------------
 
@@ -56,8 +100,12 @@ public class ControladoraPersistencia {
         }
     }
 
-    public boolean existeUsuario(String nom_usuario) {
-        return usuarioJpa.existeUsuarioPorNombre(nom_usuario);
+    public boolean existeUsuarioPorAfiliado(String idAfiliado) {
+        return usuarioJpa.existeUsuarioPorAfiliado(idAfiliado);
+    }
+
+    public Usuario buscarUsuarioPorIdAfiliado(String idAfiliado) {
+        return usuarioJpa.findUsuarioByIdAfiliado(idAfiliado);
     }
 
     // ------------------- Instructor -------------------
@@ -82,10 +130,10 @@ public class ControladoraPersistencia {
         return instructorJpa.findInstructor(id_editar);
     }
 
-    public Usuario buscarUsuarioPorNombre(String nomUsuario) {
-        return usuarioJpa.FindUsuarioByName(nomUsuario);
+    public Instructor buscarInstructorPorIdUsuario(int idUsuario) {
+        return instructorJpa.findByIdUsuario(idUsuario);
     }
-    
+
     public void editarInstructor(Instructor instructor) {
         try {
             instructorJpa.edit(instructor);
@@ -93,7 +141,7 @@ public class ControladoraPersistencia {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public List<Curso> traerCursosPorInstructor(int idInstructor) {
         return cursoJpa.findCursosByInstructor(idInstructor);
     }
@@ -157,7 +205,7 @@ public class ControladoraPersistencia {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public List<Usuario> traerEstudiantesPorCurso(int idCurso) {
         return usuarioJpa.findUsuariosByCurso(idCurso);
     }
@@ -183,7 +231,7 @@ public class ControladoraPersistencia {
     public Actividad traerActividad(int id_editar) {
         return actividadJpa.findActividad(id_editar);
     }
-    
+
     public List<Actividad> traerActividadesPorCurso(int idCurso) {
         return actividadJpa.findActividadesPorCurso(idCurso);
     }
@@ -217,7 +265,7 @@ public class ControladoraPersistencia {
     public Progreso traerProgreso(int id_editar) {
         return progresoJpa.findProgreso(id_editar);
     }
-    
+
     public List<Progreso> traerProgresoPorCursoYUsuario(int idCurso, int idUsuario) {
         return progresoJpa.findByCursoAndUsuario(idCurso, idUsuario);
     }
@@ -242,36 +290,41 @@ public class ControladoraPersistencia {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     // ------------------- EvaluaciónFinal -------------------
-    
+
     public void crearEvaluacion(EvaluacionFinal e) {
         evaluacionfinalJpa.create(e);
     }
+
     public EvaluacionFinal obtenerEvaluacionPorId(Integer id) {
         return evaluacionfinalJpa.findEvaluacionFinal(id);
     }
+
     public List<EvaluacionFinal> obtenerEvaluacionesPorCurso(Integer idCurso) {
         return evaluacionfinalJpa.findByCurso(idCurso);
     }
-    
+
     // ------------------- PreguntaEvaluación -------------------
-    
+
     public void crearPregunta(PreguntaEvaluacion p) {
         preguntaevaluacionJpa.create(p);
     }
+
     public List<PreguntaEvaluacion> obtenerPreguntasPorEvaluacion(Integer idEvaluacion) {
         return preguntaevaluacionJpa.findByEvaluacion(idEvaluacion);
     }
-    
+
     // ------------------- ResultadoEvaluación -------------------
-    
+
     public void guardarResultado(ResultadoEvaluacion r) {
         resultadoevaluacionJpa.create(r);
     }
+
     public List<ResultadoEvaluacion> obtenerResultadosPorUsuarioYEvaluacion(Integer idUsuario, Integer idEvaluacion) {
         return resultadoevaluacionJpa.findByUserAndEvaluacion(idUsuario, idEvaluacion);
     }
+
     public long contarIntentos(Integer idUsuario, Integer idEvaluacion) {
         return resultadoevaluacionJpa.countByUserAndEvaluacion(idUsuario, idEvaluacion);
     }

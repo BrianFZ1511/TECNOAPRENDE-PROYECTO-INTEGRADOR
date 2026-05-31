@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "SvLoginAdmin", urlPatterns = {"/SvLoginAdmin"})
 public class SvLoginAdmin extends HttpServlet {
-    
+
     private static final int MAX_INTENTOS = 5;
     private static final long TIEMPO_BLOQUEO_MS = 15 * 60 * 1000L;
 
@@ -27,33 +27,32 @@ public class SvLoginAdmin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        
-        String usuario = request.getParameter("usuario");
+
+        String idAfiliado = request.getParameter("idAfiliado");
         String contrasena = request.getParameter("contrasena");
-        
-        // VALIDACIÓN BÁSICA
-        if (usuario == null || usuario.trim().isEmpty()
+
+        if (idAfiliado == null || idAfiliado.trim().isEmpty()
                 || contrasena == null || contrasena.trim().isEmpty()) {
             request.setAttribute("error", "Complete todos los campos.");
             request.getRequestDispatcher("loginAdmin.jsp").forward(request, response);
             return;
         }
-        
-        usuario = usuario.trim();
-        if (usuario.length() > 50 || contrasena.length() > 200) {
+
+        idAfiliado = idAfiliado.trim().toUpperCase();
+
+        if (idAfiliado.length() > 20 || contrasena.length() > 200) {
             request.setAttribute("error", "Datos inválidos.");
             request.getRequestDispatcher("loginAdmin.jsp").forward(request, response);
             return;
         }
-        
-        //PROTECCIÓN ANTI-FUERZA BRUTA (por sesión)
+
         HttpSession session = request.getSession(true);
         Integer intentosFallidos = (Integer) session.getAttribute("adminIntentosFallidos");
         Long tiempoBloqueo = (Long) session.getAttribute("adminTiempoBloqueo");
-        
+
         if (intentosFallidos == null) intentosFallidos = 0;
 
         if (tiempoBloqueo != null) {
@@ -70,18 +69,16 @@ public class SvLoginAdmin extends HttpServlet {
                 intentosFallidos = 0;
             }
         }
-        
-        //BUSCAR ADMIN Y VERIFICAR CON BCRYPT
+
         Controladora control = new Controladora();
-        Usuario adminEncontrado = control.buscarUsuarioPorNombre(usuario);
-        
+        Usuario adminEncontrado = control.buscarUsuarioPorIdAfiliado(idAfiliado);
+
         boolean credencialesCorrectas = false;
         if (adminEncontrado != null && "admin".equals(adminEncontrado.getRol())) {
             credencialesCorrectas = PasswordUtil.verificar(contrasena, adminEncontrado.getContrasena());
         }
-        
+
         if (credencialesCorrectas) {
-            //INICIO DE SESIÓN EXITOSO
             session.invalidate();
             session = request.getSession(true);
 
@@ -102,15 +99,15 @@ public class SvLoginAdmin extends HttpServlet {
             } else {
                 int restantes = MAX_INTENTOS - intentosFallidos;
                 request.setAttribute("error",
-                    "Usuario o contraseña incorrectos. Intentos restantes: " + restantes);
+                    "ID de afiliado o contraseña incorrectos. Intentos restantes: " + restantes);
             }
 
             request.getRequestDispatcher("loginAdmin.jsp").forward(request, response);
         }
     }
-    
+
     @Override
     public String getServletInfo() {
-        return "Login de administrador con BCrypt, anti-fuerza bruta y anti-session fixation";
+        return "Login de administrador por IDAFILIADO con BCrypt y anti-fuerza bruta";
     }
 }

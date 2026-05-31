@@ -37,8 +37,9 @@
     <!-- Encabezado con imagen y sesión -->
     <header class="encabezado">
         <img src="images/ITSZ-LCNTEZ.png" alt="Encabezado de logos" class="imagen-encabezado">
+        <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
         <div class="acciones">
-            <p><strong><%= usuario.getNom_usuario() %></strong></p>
+            <p><strong><%= usuario.getAfiliado() != null ? org.apache.commons.text.StringEscapeUtils.escapeHtml4(usuario.getAfiliado().getIdAfiliado()) : "" %></strong></p>
             <a href="SvCerrarSesion"><button>Cerrar sesión</button></a>
             <a href="index.jsp"><button>Panel Principal</button></a>
         </div>
