@@ -68,11 +68,16 @@
             </div>
         </nav>
 
-        <!-- Carrusel -->
         <section class="carrusel">
+
+            <!-- Flecha izquierda -->
+            <button class="flecha flecha-izquierda" onclick="cambiarSlide(-1)">
+                &#10094;
+            </button>
+
             <div class="slides">
                 <div class="slide activo">
-                    <img src="images/slide1.jpg" alt="Cursos TIC">
+                    <img src="images/slide1.png" alt="Cursos TIC">
                     <div class="texto-slide">
                         <h2>Aprende e impulsa tus habilidades digitales</h2>
                         <p>Cursos gratuitos de TICs para todos</p>
@@ -80,27 +85,33 @@
                 </div>
 
                 <div class="slide">
-                    <img src="images/slide2.jpg" alt="Certificados">
+                    <img src="images/slide2.png" alt="Certificados">
                     <div class="texto-slide">
-                        <h2>Cursa y mejora tus conocimientos</h2>
-                        <p>Conocimientos prácticos</p>
+                        <h2>TecnoAprende</h2>
+                        <p>Tu lugar de apoyo</p>
                     </div>
                 </div>
 
                 <div class="slide">
-                    <img src="images/slide3.jpg" alt="Educación">
+                    <img src="images/slide3.png" alt="Educación">
                     <div class="texto-slide">
-                        <h2>Educación para el futuro</h2>
-                        <p>Aprende a tu ritmo</p>
+                        <h2>Colaboración TecNM Zongolica y LCNTEZ</h2>
+                        <p>Todo para tí</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Flecha derecha -->
+            <button class="flecha flecha-derecha" onclick="cambiarSlide(1)">
+                &#10095;
+            </button>
+
             <div class="indicadores">
-                <span class="dot activo"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+                <span class="dot activo" onclick="irASlide(0)"></span>
+                <span class="dot" onclick="irASlide(1)"></span>
+                <span class="dot" onclick="irASlide(2)"></span>
             </div>
+
         </section>
         
       <!-- Cursos -->
@@ -168,7 +179,7 @@
             <div class="video-bienvenida">
                 <iframe
                     id="youtubeVideo"
-                    src="https://www.youtube.com/embed/-W_ojeSTUwM"
+                    src=""
                     title="Video de Bienvenida"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -218,18 +229,64 @@
     </footer>
     <script>
         let index = 0;
+
         const slides = document.querySelectorAll(".slide");
         const dots = document.querySelectorAll(".dot");
 
-        setInterval(() => {
-            slides[index].classList.remove("activo");
-            dots[index].classList.remove("activo");
+        let intervalo = setInterval(siguienteSlide, 5000);
 
-            index = (index + 1) % slides.length;
+        function mostrarSlide(n) {
 
-            slides[index].classList.add("activo");
-            dots[index].classList.add("activo");
-        }, 5000);
+            slides.forEach(slide =>
+                slide.classList.remove("activo")
+            );
+
+            dots.forEach(dot =>
+                dot.classList.remove("activo")
+            );
+
+            slides[n].classList.add("activo");
+            dots[n].classList.add("activo");
+
+            index = n;
+        }
+
+        function siguienteSlide() {
+
+            let nuevo = (index + 1) % slides.length;
+            mostrarSlide(nuevo);
+        }
+
+        function cambiarSlide(direccion) {
+
+            let nuevo = index + direccion;
+
+            if (nuevo < 0) {
+                nuevo = slides.length - 1;
+            }
+
+            if (nuevo >= slides.length) {
+                nuevo = 0;
+            }
+
+            mostrarSlide(nuevo);
+
+            reiniciarCarrusel();
+        }
+
+        function irASlide(n) {
+
+            mostrarSlide(n);
+
+            reiniciarCarrusel();
+        }
+
+        function reiniciarCarrusel() {
+
+            clearInterval(intervalo);
+
+            intervalo = setInterval(siguienteSlide, 5000);
+        }
         
         const modalBienvenida = document.getElementById("modalBienvenida");
 
