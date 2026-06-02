@@ -137,7 +137,7 @@
 
                                     <span class="texto-terminos">
                                         He leído y acepto los
-                                        <a href=""
+                                        <a href="docs/Terminos_y_Condiciones_TecnoAprende.pdf"
                                            target="_blank"
                                            download>
                                             Términos y Condiciones
