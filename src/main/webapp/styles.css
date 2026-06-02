@@ -1556,132 +1556,214 @@ iframe {
     cursor: pointer;
 }
 
+/* ── Evaluación Final ───────────────────────────────────────── */
 .container_evaluacionfinal {
-    background: #ffffff !important;
-    color: #333333 !important;
-    text-align: left !important;
-    padding: 30px !important; 
-    border-radius: 12px !important; 
-    max-width: 900px !important;
-    margin: 30px auto !important;
-    box-shadow: 0 8px 25px rgba(1, 71, 34, 0.1) !important; 
-    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    color: #333333;
+    text-align: left;
+    padding: 36px 40px;
+    border-radius: 16px;
+    max-width: 860px;
+    margin: 36px auto 48px;
+    box-shadow: 0 6px 28px rgba(1, 71, 34, 0.10);
+    border: 1px solid #dce8dc;
 }
 
 .container_evaluacionfinal h1 {
-    text-align: center !important;
-    color: #014722 !important;
-    font-size: 2.2rem;
-    margin-bottom: 25px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #e8e8e8;
+    text-align: center;
+    color: #014722;
+    font-size: 2rem;
+    margin-bottom: 6px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #e0ede0;
 }
 
 .container_evaluacionfinal h3 {
-    text-align: center !important;
-    margin-top: -10px !important;
-    color: #01391C !important; 
-    font-size: 1.1rem;
+    text-align: center;
+    color: #014722;
+    font-size: 1rem;
     font-weight: 600;
+    margin: 0 0 6px;
+    background: #f0f8f1;
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.container_evaluacionfinal p {
+    color: #444;
+    font-size: 0.97rem;
     margin-bottom: 20px;
 }
 
 .mensajeIntentos {
-    padding: 12px !important;
-    background: #fff3f3 !important; 
-    border-left: 5px solid #d9534f !important;
-    margin: 15px 0 !important;
+    padding: 12px 16px;
+    background: #fff3f3;
+    border-left: 5px solid #d9534f;
+    margin: 0 0 18px;
     color: #a94442;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 6px;
+    font-size: 0.97rem;
+}
+
+.aviso-sin-intentos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    background: #fff0f0;
+    border: 1px solid #f5c6c6;
+    border-left: 5px solid #dc3545;
+    border-radius: 8px;
+    color: #842029;
+    font-weight: 600;
+    margin-bottom: 16px;
+    font-size: 0.97rem;
 }
 
 .container_evaluacionfinal form {
-    max-width: none !important;
-    background-color: white !important;
-    padding: 0 !important;
-    box-shadow: none !important;
+    max-width: none;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
 }
 
+/* ── Tarjeta de pregunta ── */
 .container_evaluacionfinal_pregunta {
-    background: #fafafa;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-}
-
-.container_evaluacionfinal_pregunta {
-    background: #fcfcfc;
-    border: 1px solid #e8e8e8; 
-    padding: 20px;
+    background: #f9fdf9;
+    border: 1px solid #d6e8d6;
+    padding: 22px 24px;
     margin-bottom: 20px;
-    border-radius: 10px;
-    transition: box-shadow 0.2s;
+    border-radius: 12px;
+    transition: box-shadow 0.2s, border-color 0.2s;
 }
 .container_evaluacionfinal_pregunta:hover {
-    box-shadow: 0 2px 8px rgba(1, 71, 34, 0.1); 
+    box-shadow: 0 4px 14px rgba(1, 71, 34, 0.09);
+    border-color: #b0d4b0;
 }
 
-.container_evaluacionfinal p {
-    color: #01391C;
+/* Número + enunciado alineados */
+.pregunta-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+.pregunta-numero {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: #014722;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+}
+.pregunta-texto {
+    font-size: 1.08rem;
+    color: #014722;
+    font-weight: 700;
+    line-height: 1.5;
 }
 
-.container_evaluacionfinal_pregunta strong {
-    font-size: 1.15rem;
-    color: #014722; 
-    display: block;
-    margin-bottom: 15px;
+/* ── Opciones ── */
+.container_evaluacionfinal_opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
-.container_evaluacionfinal_opciones label {
-    display: flex !important; 
-    align-items: flex-start !important;
-    justify-content: space-between !important; 
-    color: #333333;
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px 15px; 
-    border-radius: 6px;
+
+.opcion-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 16px;
+    border-radius: 8px;
+    border: 1.5px solid #dce8dc;
+    background: #ffffff;
     cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 1rem;
-    border: 1px solid transparent;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    font-size: 0.97rem;
+    color: #333;
+    line-height: 1.45;
+}
+.opcion-label:hover {
+    background: #edf7ed;
+    border-color: #8fc98f;
+    box-shadow: 0 2px 6px rgba(1, 71, 34, 0.08);
+}
+.opcion-label.seleccionada {
+    background: #dff2e1;
+    border-color: #014722;
+    box-shadow: 0 2px 8px rgba(1, 71, 34, 0.13);
 }
 
-.container_evaluacionfinal_opciones label:hover {
-    background-color: #f0fff0;
-    border: 1px solid #c9e6c9;
+/* Radio al inicio, perfectamente alineado */
+.opcion-label input[type="radio"] {
+    flex-shrink: 0;
+    margin-top: 3px;
+    width: 17px;
+    height: 17px;
+    accent-color: #014722;
+    cursor: pointer;
 }
 
-.container_evaluacionfinal_opciones input[type="radio"] {
-    margin-left: 0;
-    margin-right: 0; 
-    margin-top: 2px; 
-    accent-color: #014722; 
-    transform: scale(1.2); 
+/* Badge con la letra */
+.opcion-letra {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: #e8f4e8;
+    color: #014722;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+}
+.opcion-label.seleccionada .opcion-letra {
+    background: #014722;
+    color: #fff;
 }
 
-.container_evaluacionfinal_opciones span.texto-respuesta {
-    flex-grow: 1; 
-    max-width: 95%; 
+.texto-respuesta {
+    flex: 1;
     text-align: left;
-    padding-right: 15px; 
 }
 
+/* ── Botón enviar ── */
 .container_evaluacionfinal_btn-enviar {
-    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background: #014722;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 18px;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
 }
-.container_evaluacionfinal_btn-enviar:hover {
-    background: #11d664;
-    color: black;
+.container_evaluacionfinal_btn-enviar:hover:not(:disabled) {
+    background: #026b33;
+    transform: translateY(-1px);
+}
+.container_evaluacionfinal_btn-enviar:disabled {
+    background: #9dbfad;
+    cursor: not-allowed;
 }
 
 .modal_calificacion {
@@ -1804,7 +1886,6 @@ iframe {
     height: 350px;
     position: relative;
 }
-
 
 /* =========================
    BARRA TIPO CAPACITATE

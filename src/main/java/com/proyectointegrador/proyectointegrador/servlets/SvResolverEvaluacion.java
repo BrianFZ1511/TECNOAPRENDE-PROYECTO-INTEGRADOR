@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "SvResolverEvaluacion", urlPatterns = {"/SvResolverEvaluacion"})
 public class SvResolverEvaluacion extends HttpServlet {
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,11 +32,22 @@ public class SvResolverEvaluacion extends HttpServlet {
         Controladora control = new Controladora();
 
         String sIdEvaluacion = request.getParameter("idEvaluacion");
+
         if (sIdEvaluacion == null) {
             response.sendError(400, "Falta idEvaluacion");
             return;
         }
+
         Integer idEvaluacion = Integer.parseInt(sIdEvaluacion);
+
+        String vista = request.getParameter("vista");
+
+        String sIdCurso = request.getParameter("idCurso");
+        Integer idCurso = null;
+
+        if (sIdCurso != null && !sIdCurso.isEmpty()) {
+            idCurso = Integer.parseInt(sIdCurso);
+        }
 
         HttpSession ses = request.getSession();
         Usuario usuario = (Usuario) ses.getAttribute("usuarioLogueado");
@@ -49,39 +60,54 @@ public class SvResolverEvaluacion extends HttpServlet {
         Integer idUsuario = usuario.getId();
 
         boolean puede = control.puedeIntentar(idUsuario, idEvaluacion);
+
         if (!puede) {
 
-            EvaluacionFinal evaluacion = control.getEvaluacionPorCurso(idEvaluacion);
+            EvaluacionFinal evaluacion = control.getEvaluacionPorCurso(idCurso);
 
             request.setAttribute("evaluacion", evaluacion);
-            request.setAttribute("mensajeIntentos", 
-                "Ya realizaste los 2 intentos. No puedes volver a enviar la evaluación.");
 
-            request.getRequestDispatcher("evaluacion.jsp").forward(request, response);
+            request.setAttribute("mensajeIntentos",
+                    "Ya realizaste los 2 intentos. No puedes volver a enviar la evaluación.");
+
+            // NUEVO
+            request.setAttribute("vista", vista);
+            request.setAttribute("idCurso", idCurso);
+
+            request.getRequestDispatcher("evaluacion.jsp")
+                    .forward(request, response);
+
             return;
         }
-
 
         Map<Integer, String> respuestas = new HashMap<>();
         Map<String, String[]> params = request.getParameterMap();
 
         for (String key : params.keySet()) {
+
             if (key.startsWith("resp_")) {
+
                 try {
                     Integer idPreg = Integer.parseInt(key.substring(5));
                     String val = request.getParameter(key);
+
                     respuestas.put(idPreg, val);
+
                 } catch (NumberFormatException ex) {
                 }
             }
         }
 
-        Map<String, Object> resumen = control.generarResumen(idEvaluacion, respuestas);
+        Map<String, Object> resumen =
+                control.generarResumen(idEvaluacion, respuestas);
 
-        ResultadoEvaluacion resultadoGuardado =
-                control.procesarYGuardarResultado(idUsuario, idEvaluacion, respuestas);
+        ResultadoEvaluacion resultadoGuardado = control.procesarYGuardarResultado(
+            idUsuario,
+            idEvaluacion,
+            respuestas);
 
-        EvaluacionFinal evaluacion = control.getEvaluacionPorCurso(idEvaluacion);
+        EvaluacionFinal evaluacion = control.getEvaluacionPorCurso(idCurso);
+
         List<PreguntaEvaluacion> preguntas = control.getPreguntasDeEvaluacion(idEvaluacion);
 
         request.setAttribute("evaluacion", evaluacion);
@@ -89,7 +115,13 @@ public class SvResolverEvaluacion extends HttpServlet {
         request.setAttribute("resumen", resumen);
         request.setAttribute("resultado", resultadoGuardado);
         request.setAttribute("intentos", resultadoGuardado.getIntentos());
-        request.getRequestDispatcher("evaluacion.jsp").forward(request, response);
+
+        // NUEVO
+        request.setAttribute("vista", vista);
+        request.setAttribute("idCurso", idCurso);
+
+        request.getRequestDispatcher("evaluacion.jsp")
+                .forward(request, response);
     }
 
     @Override

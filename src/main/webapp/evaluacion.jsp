@@ -37,7 +37,6 @@
     <!-- Encabezado con imagen y sesión -->
     <header class="encabezado">
         <img src="images/ITSZ-LCNTEZ.png" alt="Encabezado de logos" class="imagen-encabezado">
-        <img src="images/tecnoaprende.png" alt="Logo TecnoAprende" class="tecnoaprende">
         <div class="acciones">
             <p><strong><%= usuario.getAfiliado() != null ? org.apache.commons.text.StringEscapeUtils.escapeHtml4(usuario.getAfiliado().getIdAfiliado()) : "" %></strong></p>
             <a href="SvCerrarSesion"><button>Cerrar sesión</button></a>
@@ -72,19 +71,34 @@
         </div>
     <% } %>
 
-    <form action="SvResolverEvaluacion" method="POST">
+    <form action="SvResolverEvaluacion" method="POST" id="formEvaluacion">
 
         <input type="hidden" name="idEvaluacion" value="<%= eval.getIdEvaluacion() %>">
 
-        <% for (PreguntaEvaluacion p : eval.getPreguntas()) { %>
+        <% 
+            int numPregunta = 0;
+            for (PreguntaEvaluacion p : eval.getPreguntas()) {
+                numPregunta++;
+                String[][] opciones = {
+                    {"A", p.getOpcionA()},
+                    {"B", p.getOpcionB()},
+                    {"C", p.getOpcionC()},
+                    {"D", p.getOpcionD()}
+                };
+        %>
             <div class="container_evaluacionfinal_pregunta">
-                <strong><%= p.getEnunciado() %></strong>
-
+                <div class="pregunta-header">
+                    <span class="pregunta-numero"><%= numPregunta %></span>
+                    <strong class="pregunta-texto"><%= p.getEnunciado() %></strong>
+                </div>
                 <div class="container_evaluacionfinal_opciones">
-                    <label> <span class="texto-respuesta"><%= p.getOpcionA() %></span> <input type="radio" name="resp_<%= p.getIdPregunta() %>" value="A" required> </label>
-                    <label> <span class="texto-respuesta"><%= p.getOpcionB() %></span> <input type="radio" name="resp_<%= p.getIdPregunta() %>" value="B"> </label>
-                    <label> <span class="texto-respuesta"><%= p.getOpcionC() %></span> <input type="radio" name="resp_<%= p.getIdPregunta() %>" value="C"> </label>
-                    <label> <span class="texto-respuesta"><%= p.getOpcionD() %></span> <input type="radio" name="resp_<%= p.getIdPregunta() %>" value="D"> </label>
+                    <% for (String[] op : opciones) { %>
+                    <label class="opcion-label" data-grupo="resp_<%= p.getIdPregunta() %>">
+                        <input type="radio" name="resp_<%= p.getIdPregunta() %>" value="<%= op[0] %>" <%= op[0].equals("A") ? "required" : "" %>>
+                        <span class="opcion-letra"><%= op[0] %></span>
+                        <span class="texto-respuesta"><%= op[1] %></span>
+                    </label>
+                    <% } %>
                 </div>
             </div>
         <% } %>
@@ -94,15 +108,15 @@
             if (puedeIntentar == null) puedeIntentar = true;
         %>
 
-        <button type="submit" class="container_evaluacionfinal_btn-enviar" <%= !puedeIntentar ? "disabled" : "" %>>
-            Enviar evaluación
-        </button>
-            
         <% if (!puedeIntentar) { %>
-            <div style="padding:10px; background:#ffe5e5; border-left:4px solid red; margin:15px 0; font-weight:bold;">
-                Ya realizaste los 2 intentos permitidos. No puedes enviar la evaluación nuevamente.
+            <div class="aviso-sin-intentos">
+                <i class="fas fa-lock"></i> Ya realizaste los 2 intentos permitidos. No puedes enviar la evaluación nuevamente.
             </div>
         <% } %>
+
+        <button type="submit" class="container_evaluacionfinal_btn-enviar" <%= !puedeIntentar ? "disabled" : "" %>>
+            <i class="fas fa-paper-plane"></i> Enviar evaluación
+        </button>
     </form>
 
 </div>
@@ -196,6 +210,16 @@
     <% if (mostrarModal) { %>
         document.getElementById('modalResultado').style.display = 'flex';
     <% } %>
+
+    document.querySelectorAll('.opcion-label input[type="radio"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            var grupo = this.name;
+            document.querySelectorAll('input[name="' + grupo + '"]').forEach(function(r) {
+                r.closest('.opcion-label').classList.remove('seleccionada');
+            });
+            this.closest('.opcion-label').classList.add('seleccionada');
+        });
+    });
 </script>
 
 </body>
