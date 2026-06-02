@@ -75,6 +75,10 @@
 
         <input type="hidden" name="idEvaluacion" value="<%= eval.getIdEvaluacion() %>">
 
+        <input type="hidden" name="idCurso" value="<%= idCurso %>">
+
+        <input type="hidden" name="vista" value="<%= vista %>">
+
         <% 
             int numPregunta = 0;
             for (PreguntaEvaluacion p : eval.getPreguntas()) {
@@ -202,7 +206,7 @@
             </div>
             </div>
             <div class="creditos-equipo">
-                <a href="creditos.jsp"><p>© 2025 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
+                <a href="creditos.jsp"><p>© 2026 TECNOAPRENDE. Plataforma desarrollada por equipo BOX Code. Todos los derechos reservados.</p></a>
                 </div>
         </footer>
 
