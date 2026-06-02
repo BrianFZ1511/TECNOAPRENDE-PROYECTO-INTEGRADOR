@@ -34,10 +34,18 @@ public class SvUsuarios extends HttpServlet {
 
         String idAfiliado = request.getParameter("idAfiliado");
         String contrasena = request.getParameter("contrasena");
+        String aceptaTerminos = request.getParameter("aceptaTerminos");
 
         // --- 1. VALIDACIÓN DE CAMPOS OBLIGATORIOS ---
         if (esVacio(idAfiliado) || esVacio(contrasena)) {
             request.setAttribute("errorMessage", "Todos los campos son obligatorios.");
+            request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
+            return;
+        }
+        
+        if (aceptaTerminos == null) {
+            request.setAttribute("errorMessage",
+                "Debes aceptar los Términos y Condiciones para registrarte.");
             request.getRequestDispatcher("/login_registro.jsp").forward(request, response);
             return;
         }

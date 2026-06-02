@@ -56,7 +56,7 @@
                             <input type="text"
                                    id="loginIdAfiliado"
                                    name="idAfiliado"
-                                   placeholder="Ej: AF001"
+                                   placeholder="Ej: 134252"
                                    maxlength="20"
                                    required
                                    autocomplete="username"
@@ -98,7 +98,7 @@
                             <input type="text"
                                    id="regIdAfiliado"
                                    name="idAfiliado"
-                                   placeholder="Ej: AF001"
+                                   placeholder="Ej: 563461"
                                    maxlength="20"
                                    required
                                    autocomplete="off"
@@ -124,6 +124,29 @@
                                    required
                                    autocomplete="new-password">
                         </p>
+                        
+                        <p>
+                                <label class="checkbox-terminos">
+
+                                    <input type="checkbox"
+                                           name="aceptaTerminos"
+                                           id="aceptaTerminos"
+                                           required>
+
+                                    <span class="checkmark"></span>
+
+                                    <span class="texto-terminos">
+                                        He leído y acepto los
+                                        <a href=""
+                                           target="_blank"
+                                           download>
+                                            Términos y Condiciones
+                                        </a>
+                                    </span>
+
+                                </label>
+                        </p>
+                        <br>
                         <button type="submit" class="boton_iniciosesion_registro">Registrarse</button>
                     </form>
 

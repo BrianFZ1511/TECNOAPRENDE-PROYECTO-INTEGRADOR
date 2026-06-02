@@ -310,6 +310,82 @@ p{
     color:#ffffff;
 }
 
+.terminos-container {
+    margin: 20px 0;
+}
+
+.checkbox-terminos{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:8px !important;
+    width:fit-content;
+    margin:0 auto;
+}
+
+.checkbox-terminos input{
+    display:block;
+    width:18px;
+    height:18px;
+    margin:0;
+    flex-shrink:0;
+}
+
+/* Ocultar checkbox original */
+.checkbox-terminos input {
+    display: none;
+}
+
+/* Cuadro */
+.checkmark {
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    border-radius: 5px;
+    background: white;
+    border: 2px solid white;
+    position: relative;
+}
+
+/* Estado marcado */
+.checkbox-terminos input:checked + .checkmark {
+    background: #28a745;
+    border-color: #28a745;
+}
+
+/* Palomita */
+.checkbox-terminos input:checked + .checkmark::after {
+    content: "✓";
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: -2px;
+    left: 4px;
+    font-size: 16px;
+}
+
+/* Texto */
+.texto-terminos{
+    display:inline;
+    margin:0;
+    padding:0;
+    line-height:1.3;
+    color:white;
+    font-weight:normal;
+}
+
+/* Link */
+.texto-terminos a {
+    color: #ffd54f;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.texto-terminos a:hover {
+    color: #fff176;
+}
+
 p.progreso{
     color:#01391C;
 }
