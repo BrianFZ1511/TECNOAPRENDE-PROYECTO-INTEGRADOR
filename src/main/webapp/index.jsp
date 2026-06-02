@@ -179,7 +179,7 @@
             <div class="video-bienvenida">
                 <iframe
                     id="youtubeVideo"
-                    src="https://www.youtube.com/watch?v=eCSLyArFII4"
+                    src="https://www.youtube.com/embed/eCSLyArFII4"
                     title="Video de Bienvenida"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
